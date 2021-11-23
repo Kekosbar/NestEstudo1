@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity'
@@ -21,18 +21,23 @@ export class UsersService {
   }
 
   findOne(id: number) {
-    return this.users.find(user => user.id === id);
+    const user = this.users.find(user => user.id === id);
+    if(!user)
+      throw new HttpException(`User id -> ${id} not found`, HttpStatus.NOT_FOUND);
+    return user;
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
     const index = this.users.findIndex(user => user.id === id);
-    if (index === -1) return;
-    this.users[index] = { ...updateUserDto, id};
+    if (index === -1) 
+      throw new HttpException(`User id -> ${id} not found`, HttpStatus.NOT_FOUND);
+    return this.users[index] = { ...updateUserDto, id};
   }
 
   remove(id: number) {
     const index = this.users.findIndex(user => user.id === id);
-    if (index === -1) return;
+    if (index === -1) 
+      throw new HttpException(`User id -> ${id} not found`, HttpStatus.NOT_FOUND);
     return this.users.splice(index, 1);
   }
 }
