@@ -1,10 +1,15 @@
 import { IsNumber, IsOptional, IsString } from "class-validator";
 
 export class CreateUserDto {
+  @IsNumber()
+  age: number
+  
   @IsString()
-  name: string;
-
+  email: string
+  
   @IsString()
-  @IsOptional()
-  email?: string;
+  name: string
+  
+  @IsNumber()
+  team_id: number
 }
