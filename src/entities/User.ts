@@ -14,6 +14,9 @@ class User {
   
   @Column({ nullable: false })
   name: string
+
+  @Column({ nullable: false, select: false, default: '' })
+  password: string
   
   @Column()
   team_id: number

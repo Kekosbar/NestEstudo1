@@ -1,6 +1,8 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import SaltNumber from 'src/entities/SaltNumber';
 import User from 'src/entities/User';
+import { HashService } from 'src/services/hash/hash.service';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -10,15 +12,35 @@ export class UsersService {
 
   constructor(
     @InjectRepository(User)
-    private userRepository: Repository<User>
+    private userRepository: Repository<User>,
+    @InjectRepository(SaltNumber)
+    private saltNumberRepository: Repository<SaltNumber>,
+    private hashService: HashService,
   ) {}
 
   async create(createUserDto: CreateUserDto) {
-    return await this.userRepository.save(createUserDto)
+    try{
+      const { email, password } = createUserDto;
+      const { hash, saltOrRounds } = await this.hashService.generateHash(email+password)
+      createUserDto.password = hash;
+      const user = await this.userRepository.save(createUserDto);
+      await this.saltNumberRepository.save({
+        user_id: user.id,
+        salt: saltOrRounds
+      })
+      delete user.password
+      return user;
+    } catch (error) {
+      throw new HttpException(error, HttpStatus.BAD_REQUEST);
+    }
   }
 
   async findAll() {
-    return await this.userRepository.find()
+    try{
+      return await this.userRepository.find();
+    } catch (error) {
+      throw new HttpException(error, HttpStatus.BAD_REQUEST);
+    }
   }
 
   async findOne(id: number) {
@@ -31,6 +53,17 @@ export class UsersService {
 
   async update(id: number, updateUserDto: UpdateUserDto) {
     try {
+      if(updateUserDto.email)
+        throw new HttpException("Não é possível alterar o email", HttpStatus.BAD_REQUEST);
+
+      if(updateUserDto.password) {
+        const { email } = await this.userRepository.findOne(id)
+        const { hash, saltOrRounds } = await this.hashService.generateHash(email+updateUserDto.password)
+        updateUserDto.password = hash
+        await this.saltNumberRepository.update(id, {
+          salt: saltOrRounds
+        })
+      }
       return await this.userRepository.update(id, updateUserDto)
     } catch (error) {
       throw new HttpException({
