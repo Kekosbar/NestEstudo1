@@ -2,15 +2,14 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@n
 import { TeamsService } from './teams.service';
 import { CreateTeamDto } from './dto/create-team.dto';
 import { UpdateTeamDto } from './dto/update-team.dto';
-import { Roles } from 'src/roles/roles.decorator';
-import { Role } from 'src/roles/role.enum';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { Roles } from 'src/resources/auth/roles/roles.decorator';
+import { Role } from 'src/resources/auth/roles/role.enum';
 
-@UseGuards(JwtAuthGuard)
 @Controller('teams')
 export class TeamsController {
   constructor(private readonly teamsService: TeamsService) {}
 
+  @Roles(Role.Admin)
   @Post()
   create(@Body() createTeamDto: CreateTeamDto) {
     return this.teamsService.create(createTeamDto);
@@ -32,6 +31,7 @@ export class TeamsController {
     return this.teamsService.update(+id, updateTeamDto);
   }
 
+  @Roles(Role.Admin)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.teamsService.remove(+id);

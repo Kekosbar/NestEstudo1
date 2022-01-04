@@ -4,9 +4,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './resources/users/users.module';
 import { TeamsModule } from './resources/teams/teams.module';
 import { APP_GUARD } from '@nestjs/core';
-import { RolesGuard } from './roles/roles.guard';
 import { AuthModule } from './resources/auth/auth.module';
 import { RolesModule } from './resources/roles/roles.module';
+import { JwtAuthGuard } from './resources/auth/jwt-auth.guard';
+import { RolesGuard } from './resources/auth/roles/roles.guard';
 
 @Module({
   imports: [
@@ -28,6 +29,10 @@ import { RolesModule } from './resources/roles/roles.module';
   ],
   controllers: [],
   providers: [
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
     {
       provide: APP_GUARD,
       useClass: RolesGuard,

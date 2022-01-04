@@ -1,9 +1,10 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import SaltNumber from 'src/entities/SaltNumber';
 import User from 'src/entities/User';
 import { HashService } from 'src/services/hash/hash.service';
 import { Repository } from 'typeorm';
+import { AuthUserDto } from './dto/auth-user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
@@ -85,6 +86,23 @@ export class UsersService {
         message: 'Não foi possível remover o registro',
         bd_error: error.message
       }, HttpStatus.BAD_REQUEST)
+    }
+  }
+
+  async authentication(authDto: AuthUserDto) {
+    try {
+      const user = await this.userRepository.findOneOrFail({ email: authDto.email })
+      const saltNumber = await this.saltNumberRepository.findOneOrFail(user.id)
+      const { hash } = await this.hashService.generateHash(authDto.email+authDto.password, saltNumber.salt)
+      const userAuthenticated = await this.userRepository.findOneOrFail({
+        id: user.id,
+        password: hash
+      }, {
+        relations: ['roles']
+      })
+      return userAuthenticated;
+    } catch(error) {
+      throw new UnauthorizedException();
     }
   }
 }

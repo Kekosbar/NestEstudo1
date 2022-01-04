@@ -11,6 +11,7 @@ import { HashService } from 'src/services/hash/hash.service';
     TypeOrmModule.forFeature([User, SaltNumber])
   ],
   controllers: [UsersController],
-  providers: [UsersService, HashService]
+  providers: [UsersService, HashService],
+  exports: [UsersService]
 })
 export class UsersModule {}
