@@ -8,6 +8,8 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
 import SaltNumber from 'src/entities/SaltNumber';
 import User from 'src/entities/User';
+import { PassportModule } from '@nestjs/passport';
+import { JwtStrategy } from './jwt.strategy';
 
 @Module({
   imports: [
@@ -17,8 +19,9 @@ import User from 'src/entities/User';
       secret: process.env.SECRET_KEY_TOKEN,
       signOptions: { expiresIn: '60s' },
     }),
+    PassportModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, LocalStrategy, HashService]
+  providers: [AuthService, LocalStrategy, HashService, JwtStrategy]
 })
 export class AuthModule {}

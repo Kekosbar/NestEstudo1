@@ -7,6 +7,7 @@ import User from 'src/entities/User';
 import SaltNumber from 'src/entities/SaltNumber';
 import { HashService } from 'src/services/hash/hash.service';
 import { DataToken } from 'src/interfaces/data-token.interface';
+import { Role } from 'src/roles/role.enum';
 
 @Injectable()
 export class AuthService {
@@ -30,10 +31,10 @@ export class AuthService {
       }, {
         relations: ['roles']
       })
-      // const rolesInToken = userAuthenticated.roles.map(role => role.name)
+      const rolesInToken = userAuthenticated.roles.map(role => role.name)
       const access_token = await this.login({
         sub: userAuthenticated.id,
-        // roles: rolesInToken,
+        roles: rolesInToken as Role[],
         create_at: new Date()
       })
       return {
@@ -41,6 +42,7 @@ export class AuthService {
         user: userAuthenticated
       }
     } catch(error) {
+      console.log(error);
       throw new UnauthorizedException();
     }
   }

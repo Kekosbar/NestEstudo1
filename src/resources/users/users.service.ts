@@ -37,7 +37,9 @@ export class UsersService {
 
   async findAll() {
     try{
-      return await this.userRepository.find();
+      return await this.userRepository.find({
+        relations: ['roles']
+      });
     } catch (error) {
       throw new HttpException(error, HttpStatus.BAD_REQUEST);
     }
@@ -45,7 +47,9 @@ export class UsersService {
 
   async findOne(id: number) {
     try {
-      return await this.userRepository.findOneOrFail(id)
+      return await this.userRepository.findOneOrFail(id, {
+        relations: ['roles']
+      })
     } catch (error) {
       throw new HttpException('Registro não encontrado', HttpStatus.NOT_FOUND)
     }

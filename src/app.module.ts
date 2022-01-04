@@ -3,6 +3,10 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './resources/users/users.module';
 import { TeamsModule } from './resources/teams/teams.module';
+import { APP_GUARD } from '@nestjs/core';
+import { RolesGuard } from './roles/roles.guard';
+import { AuthModule } from './resources/auth/auth.module';
+import { RolesModule } from './resources/roles/roles.module';
 
 @Module({
   imports: [
@@ -17,10 +21,17 @@ import { TeamsModule } from './resources/teams/teams.module';
       entities: ['dist/entities/*.js'],
       synchronize: true,
     }),
+    AuthModule,
     UsersModule,
-    TeamsModule
+    TeamsModule,
+    RolesModule
   ],
   controllers: [],
-  providers: [],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
+    },
+  ],
 })
 export class AppModule {}
