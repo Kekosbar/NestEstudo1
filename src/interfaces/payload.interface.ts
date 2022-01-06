@@ -1,6 +1,6 @@
 import { Role } from "src/enum/role.enum";
 
-export interface DataToken {
+export interface Payload {
   sub: number,
   username: string,
   teamId: number,

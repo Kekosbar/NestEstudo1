@@ -1,7 +1,7 @@
 import { Role } from "src/enum/role.enum";
 
-export interface DataToken {
-  sub: number,
+export interface UserInterface {
+  userId: number 
   username: string,
   teamId: number,
   roles: Role[],

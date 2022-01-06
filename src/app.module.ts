@@ -10,6 +10,7 @@ import { RolesModule } from './resources/roles/roles.module';
 import { JwtAuthGuard } from './guards/jwt/jwt-auth.guard';
 import { RolesGuard } from './guards/roles/roles.guard';
 import { ProjectsModule } from './resources/projects/projects.module';
+import { SameTeamGuard } from './guards/sameTeam/sameTeam.guard';
 
 @Module({
   imports: [
@@ -39,6 +40,10 @@ import { ProjectsModule } from './resources/projects/projects.module';
     {
       provide: APP_GUARD,
       useClass: RolesGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: SameTeamGuard,
     },
   ],
 })
