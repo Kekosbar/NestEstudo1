@@ -7,8 +7,8 @@ import { TeamsModule } from './resources/teams/teams.module';
 import { AuthModule } from './resources/auth/auth.module';
 import { RolesModule } from './resources/roles/roles.module';
 
-import { JwtAuthGuard } from './resources/auth/jwt-auth.guard';
-import { RolesGuard } from './resources/auth/roles/roles.guard';
+import { JwtAuthGuard } from './guards/jwt/jwt-auth.guard';
+import { RolesGuard } from './guards/roles/roles.guard';
 import { ProjectsModule } from './resources/projects/projects.module';
 
 @Module({

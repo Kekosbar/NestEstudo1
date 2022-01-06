@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { DataToken } from 'src/interfaces/data-token.interface';
-import { Role } from 'src/resources/auth/roles/role.enum';
+import { Role } from 'src/enum/role.enum';
 import { AuthUserDto } from '../users/dto/auth-user.dto';
 import { UsersService } from '../users/users.service';
 

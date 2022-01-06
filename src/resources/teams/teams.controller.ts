@@ -2,8 +2,8 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@n
 import { TeamsService } from './teams.service';
 import { CreateTeamDto } from './dto/create-team.dto';
 import { UpdateTeamDto } from './dto/update-team.dto';
-import { Roles } from 'src/resources/auth/roles/roles.decorator';
-import { Role } from 'src/resources/auth/roles/role.enum';
+import { Roles } from 'src/decorators/roles.decorator';
+import { Role } from 'src/enum/role.enum';
 
 @Controller('teams')
 export class TeamsController {

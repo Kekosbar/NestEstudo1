@@ -2,8 +2,8 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { ProjectsService } from './projects.service';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
-import { Roles } from '../auth/roles/roles.decorator';
-import { Role } from '../auth/roles/role.enum';
+import { Roles } from 'src/decorators/roles.decorator';
+import { Role } from '../../enum/role.enum';
 
 @Controller('projects')
 export class ProjectsController {

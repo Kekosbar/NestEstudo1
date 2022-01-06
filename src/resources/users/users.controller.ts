@@ -2,8 +2,8 @@ import { Controller, Get, Post, Body, Param, Delete, ParseIntPipe, Patch } from 
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { Roles } from '../auth/roles/roles.decorator';
-import { Role } from '../auth/roles/role.enum';
+import { Roles } from 'src/decorators/roles.decorator';
+import { Role } from '../../enum/role.enum';
 
 @Controller('users')
 export class UsersController {

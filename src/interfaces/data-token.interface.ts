@@ -1,4 +1,4 @@
-import { Role } from "src/resources/auth/roles/role.enum";
+import { Role } from "src/enum/role.enum";
 
 export interface DataToken {
   sub: number,
