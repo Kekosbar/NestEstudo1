@@ -18,12 +18,16 @@ export class TeamsService {
   }
 
   async findAll() {
-    return await this.teamRepository.find()
+    return await this.teamRepository.find({
+      relations: ['leader', 'projects']
+    })
   }
 
   async findOne(id: number) {
     try {
-      return await this.teamRepository.findOneOrFail(id)
+      return await this.teamRepository.findOneOrFail(id, {
+        relations: ['leader', 'projects']
+      })
     } catch (error) {
       throw new HttpException('Registro não encontrado', HttpStatus.NOT_FOUND)
     }

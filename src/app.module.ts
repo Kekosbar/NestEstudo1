@@ -1,13 +1,15 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { APP_GUARD } from '@nestjs/core';
 import { UsersModule } from './resources/users/users.module';
 import { TeamsModule } from './resources/teams/teams.module';
-import { APP_GUARD } from '@nestjs/core';
 import { AuthModule } from './resources/auth/auth.module';
 import { RolesModule } from './resources/roles/roles.module';
+
 import { JwtAuthGuard } from './resources/auth/jwt-auth.guard';
 import { RolesGuard } from './resources/auth/roles/roles.guard';
+import { ProjectsModule } from './resources/projects/projects.module';
 
 @Module({
   imports: [
@@ -25,7 +27,8 @@ import { RolesGuard } from './resources/auth/roles/roles.guard';
     AuthModule,
     UsersModule,
     TeamsModule,
-    RolesModule
+    RolesModule,
+    ProjectsModule
   ],
   controllers: [],
   providers: [

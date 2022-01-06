@@ -1,8 +1,8 @@
 import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import User from "./User";
+import Team from "./Team";
 
-@Entity('roles')
-class Role {
+@Entity('projects')
+class Project {
 
   @PrimaryGeneratedColumn()
   id: number
@@ -10,19 +10,15 @@ class Role {
   @Column()
   name: string
 
-  @Column()
-  description: string
-
-  @ManyToMany(() => User, user => user.roles, { cascade: true })
-  @JoinTable({ name: 'user_roles' })
-  users: User[]
+  // @ManyToMany(() => Team, team => team.projects, { cascade: true })
+  // @JoinTable({ name: 'teams_projects' })
+  // teams: Team[]
 
   @CreateDateColumn()
   created_at: Date
 
   @UpdateDateColumn()
   updated_at: Date
-
 }
 
-export default Role;
+export default Project;

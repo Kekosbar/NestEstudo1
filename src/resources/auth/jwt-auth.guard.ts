@@ -12,6 +12,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
   canActivate(context: ExecutionContext) {
     if(this.verifyIsPublic(context))
       return true;
+    // return true;
     return super.canActivate(context);
   }
 
